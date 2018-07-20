@@ -1,0 +1,107 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="FavLink.SiteMaster" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">    
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link href="../content/style/bootstrap.min.css" rel="stylesheet" />
+    <link href="../content/style/bootstrap-theme.min.css" rel="stylesheet" />
+    <!-- MetisMenu CSS -->
+    <link href="../content/style/metisMenu.min.css" rel="stylesheet" />
+    <link href="../content/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <!-- Custom CSS -->
+  
+    <script src="../Scripts/jquery.min.js"></script>
+    <script src="../Scripts/bootstrap.min.js"></script>
+    <script src="../Scripts/metisMenu.min.js"></script>
+    <script src="../Scripts/index.js"></script>
+    <link href="../content/style/index.css" rel="stylesheet" />
+    <!--[if lt IE 9]>
+    <script src="../Scripts/html5shiv.min.js"></script>
+    <script src="../Scripts/respond.min.js"></script>
+    <![endif]-->
+
+    <title><%=FavLink.Utility.PageBase.GetPublicPageTitle()%></title>
+    <asp:ContentPlaceHolder ID="contentHead" runat="server">
+    </asp:ContentPlaceHolder>
+    <script type="text/javascript">
+        $(function () {
+            $("#searchText").on("keyup", function (e) {
+                if (e.keyCode == 13) {
+                    var search = $.trim(this.value);
+                    location.replace("FavIndex.aspx?searchName=" + search);
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+   <div id="wrapper">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container-fluid" style="margin-left:0px">
+                <div class="navbar-header headerbg">
+                    <a class="navbar-brand" style="margin-left: 5px; font-size:32px;" 
+                        href="FavIndex.aspx?cateid=1">
+                    <%=FavLink.Utility.PageBase.GetPublicPageTitle()%>
+                    </a>
+                </div>
+                <div class="form-group form-group-margin">
+                <ul class="nav navbar-nav">
+                        <asp:Repeater ID="rptCate" runat="server">
+                        <ItemTemplate>
+                        <li style="font-size: 14px;">
+                            <a href="FavIndex.aspx?cateid=<%#Eval("id")%>"><%#Eval("name")%></a>
+                        </li>
+                        </ItemTemplate>
+                        </asp:Repeater>
+                    <li>
+                    <a href="Contactus.aspx">Contact Us</a>
+                    </li>
+
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" href="#" data-toggle="dropdown">System Admin<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="LinksMng.aspx">链接管理 Links Management</a></li>
+                            <li><a href="ItShiftMng.aspx">IT人员排班 IT shift Arrangement</a></li>
+                            <li><a href="ItSupportMng.aspx">IT人员管理 IT support Management</a></li>                            
+                            <li><a href="UserMng.aspx">用户管理 User Management</a></li>
+                        </ul>
+                    </li>              
+                </ul>
+                </div>
+
+                <div class="form-group form-group-margin">
+                <ul class="nav navbar-right navbar-top-links">
+                    <li>
+                        <input type="text" class="form-control form-inline" style="display:inline-block" name="keyword" id="searchText" 
+                            placeholder="Search links ..."/>
+                    </li>
+
+                    <% if (FavLink.Business.Authorization.UserState.IsLogin)
+                       { %>
+                    <li>
+                        <a href="javascript:void(0)"><i class="fa fa-user fa-fw"></i><asp:Label ID="litUser" runat="server"></asp:Label></a>
+                    </li>
+                    <li>
+                        <a href="../Login/Signout.ashx"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                    </li>
+                    <%}else{  %>
+                    <li>
+                        <a href="../Login/Signin.aspx"><i class="fa fa-sign-in fa-fw"></i>Login</a>
+                    </li>
+                    <%} %>
+                </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" style="margin-top:60px">
+          <asp:ContentPlaceHolder ID="contentBody" runat="server"></asp:ContentPlaceHolder>
+        </div>
+    </div>
+  
+</body>
+</html>

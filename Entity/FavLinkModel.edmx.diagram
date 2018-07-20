@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="67d4397d713e442694faca518286e00b" Name="Diagram1">
+        <EntityTypeShape EntityType="FavLinkModel.tbl_itsupport" Width="1.5" PointX="4.875" PointY="1.125" />
+        <EntityTypeShape EntityType="FavLinkModel.tbl_itsupport_arrangment" Width="1.5" PointX="7.125" PointY="0.875" />
+        <AssociationConnector Association="FavLinkModel.FK_TBL_ITSU_REFERENCE_TBL_ITSU" />
+        <EntityTypeShape EntityType="FavLinkModel.tbl_category" Width="1.5" PointX="0.5" PointY="0.5" />
+        <EntityTypeShape EntityType="FavLinkModel.tbl_link_data" Width="1.5" PointX="2.625" PointY="1.875" />
+        <EntityTypeShape EntityType="FavLinkModel.tbl_user" Width="1.5" PointX="0.5" PointY="2.5" />
+        <AssociationConnector Association="FavLinkModel.FK_TBL_LINK_REFERENCE_TBL_CATE" />
+        <AssociationConnector Association="FavLinkModel.FK_TBL_LINK_REFERENCE_TBL_USER" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

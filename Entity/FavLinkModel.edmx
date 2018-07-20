@@ -1,0 +1,362 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="FavLinkModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityType Name="tbl_category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_hotline">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="phone_number" Type="varchar" MaxLength="20" />
+          <Property Name="category" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_itsupport">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="phone_number" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="tbl_itsupport_arrangment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ref_personID" Type="int" Nullable="false" />
+          <Property Name="project" Type="nvarchar" MaxLength="100" />
+          <Property Name="shift" Type="int" />
+          <Property Name="month" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_link_data">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ref_userID" Type="int" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" />
+          <Property Name="url" Type="varchar" MaxLength="100" />
+          <Property Name="ref_categoryID" Type="int" />
+          <Property Name="icon" Type="varchar" MaxLength="20" />
+          <Property Name="bg_color" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="tbl_user">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ADAccount" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="FullName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="LastLogon" Type="datetime" />
+          <Property Name="IsValid" Type="bit" Nullable="false" />
+          <Property Name="IsAdmin" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_TBL_ITSU_REFERENCE_TBL_ITSU">
+          <End Role="tbl_itsupport" Type="Self.tbl_itsupport" Multiplicity="1" />
+          <End Role="tbl_itsupport_arrangment" Type="Self.tbl_itsupport_arrangment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_itsupport">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tbl_itsupport_arrangment">
+              <PropertyRef Name="ref_personID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TBL_LINK_REFERENCE_TBL_CATE">
+          <End Role="tbl_category" Type="Self.tbl_category" Multiplicity="0..1" />
+          <End Role="tbl_link_data" Type="Self.tbl_link_data" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tbl_link_data">
+              <PropertyRef Name="ref_categoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TBL_LINK_REFERENCE_TBL_USER">
+          <End Role="tbl_user" Type="Self.tbl_user" Multiplicity="0..1" />
+          <End Role="tbl_link_data" Type="Self.tbl_link_data" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tbl_link_data">
+              <PropertyRef Name="ref_userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FavLinkModelStoreContainer">
+          <EntitySet Name="tbl_category" EntityType="Self.tbl_category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_hotline" EntityType="Self.tbl_hotline" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_itsupport" EntityType="Self.tbl_itsupport" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_itsupport_arrangment" EntityType="Self.tbl_itsupport_arrangment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_link_data" EntityType="Self.tbl_link_data" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_user" EntityType="Self.tbl_user" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_TBL_ITSU_REFERENCE_TBL_ITSU" Association="Self.FK_TBL_ITSU_REFERENCE_TBL_ITSU">
+            <End Role="tbl_itsupport" EntitySet="tbl_itsupport" />
+            <End Role="tbl_itsupport_arrangment" EntitySet="tbl_itsupport_arrangment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TBL_LINK_REFERENCE_TBL_CATE" Association="Self.FK_TBL_LINK_REFERENCE_TBL_CATE">
+            <End Role="tbl_category" EntitySet="tbl_category" />
+            <End Role="tbl_link_data" EntitySet="tbl_link_data" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TBL_LINK_REFERENCE_TBL_USER" Association="Self.FK_TBL_LINK_REFERENCE_TBL_USER">
+            <End Role="tbl_user" EntitySet="tbl_user" />
+            <End Role="tbl_link_data" EntitySet="tbl_link_data" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FavLinkModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="FavLinkEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tbl_category" EntityType="FavLinkModel.tbl_category" />
+          <EntitySet Name="tbl_itsupport" EntityType="FavLinkModel.tbl_itsupport" />
+          <EntitySet Name="tbl_itsupport_arrangment" EntityType="FavLinkModel.tbl_itsupport_arrangment" />
+          <EntitySet Name="tbl_link_data" EntityType="FavLinkModel.tbl_link_data" />
+          <EntitySet Name="tbl_user" EntityType="FavLinkModel.tbl_user" />
+          <AssociationSet Name="FK_TBL_LINK_REFERENCE_TBL_CATE" Association="FavLinkModel.FK_TBL_LINK_REFERENCE_TBL_CATE">
+            <End Role="tbl_category" EntitySet="tbl_category" />
+            <End Role="tbl_link_data" EntitySet="tbl_link_data" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TBL_ITSU_REFERENCE_TBL_ITSU" Association="FavLinkModel.FK_TBL_ITSU_REFERENCE_TBL_ITSU">
+            <End Role="tbl_itsupport" EntitySet="tbl_itsupport" />
+            <End Role="tbl_itsupport_arrangment" EntitySet="tbl_itsupport_arrangment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TBL_LINK_REFERENCE_TBL_USER" Association="FavLinkModel.FK_TBL_LINK_REFERENCE_TBL_USER">
+            <End Role="tbl_user" EntitySet="tbl_user" />
+            <End Role="tbl_link_data" EntitySet="tbl_link_data" />
+          </AssociationSet>
+          <EntitySet Name="tbl_hotline" EntityType="FavLinkModel.tbl_hotline" />
+        </EntityContainer>
+        <EntityType Name="tbl_category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="tbl_link_data" Relationship="FavLinkModel.FK_TBL_LINK_REFERENCE_TBL_CATE" FromRole="tbl_category" ToRole="tbl_link_data" />
+        </EntityType>
+        <EntityType Name="tbl_itsupport">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="phone_number" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="tbl_itsupport_arrangment" Relationship="FavLinkModel.FK_TBL_ITSU_REFERENCE_TBL_ITSU" FromRole="tbl_itsupport" ToRole="tbl_itsupport_arrangment" />
+        </EntityType>
+        <EntityType Name="tbl_itsupport_arrangment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ref_personID" Type="Int32" Nullable="false" />
+          <Property Name="project" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="shift" Type="Int32" />
+          <Property Name="month" Type="Int32" />
+          <NavigationProperty Name="tbl_itsupport" Relationship="FavLinkModel.FK_TBL_ITSU_REFERENCE_TBL_ITSU" FromRole="tbl_itsupport_arrangment" ToRole="tbl_itsupport" />
+        </EntityType>
+        <EntityType Name="tbl_link_data">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ref_userID" Type="Int32" />
+          <Property Name="name" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="url" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="ref_categoryID" Type="Int32" />
+          <Property Name="icon" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="bg_color" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="tbl_category" Relationship="FavLinkModel.FK_TBL_LINK_REFERENCE_TBL_CATE" FromRole="tbl_link_data" ToRole="tbl_category" />
+          <NavigationProperty Name="tbl_user" Relationship="FavLinkModel.FK_TBL_LINK_REFERENCE_TBL_USER" FromRole="tbl_link_data" ToRole="tbl_user" />
+        </EntityType>
+        <EntityType Name="tbl_user">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ADAccount" Type="String" MaxLength="50" Unicode="false" FixedLength="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" Unicode="false" FixedLength="false" Nullable="false" />
+          <Property Name="LastLogon" Type="DateTime" Precision="3" />
+          <Property Name="IsValid" Type="Boolean" Nullable="false" />
+          <Property Name="IsAdmin" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="tbl_link_data" Relationship="FavLinkModel.FK_TBL_LINK_REFERENCE_TBL_USER" FromRole="tbl_user" ToRole="tbl_link_data" />
+          <Property Name="FullName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_TBL_LINK_REFERENCE_TBL_CATE">
+          <End Role="tbl_category" Type="FavLinkModel.tbl_category" Multiplicity="0..1" />
+          <End Role="tbl_link_data" Type="FavLinkModel.tbl_link_data" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tbl_link_data">
+              <PropertyRef Name="ref_categoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TBL_ITSU_REFERENCE_TBL_ITSU">
+          <End Role="tbl_itsupport" Type="FavLinkModel.tbl_itsupport" Multiplicity="1" />
+          <End Role="tbl_itsupport_arrangment" Type="FavLinkModel.tbl_itsupport_arrangment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_itsupport">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tbl_itsupport_arrangment">
+              <PropertyRef Name="ref_personID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TBL_LINK_REFERENCE_TBL_USER">
+          <End Role="tbl_user" Type="FavLinkModel.tbl_user" Multiplicity="0..1" />
+          <End Role="tbl_link_data" Type="FavLinkModel.tbl_link_data" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tbl_link_data">
+              <PropertyRef Name="ref_userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tbl_hotline">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="phone_number" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="category" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FavLinkModelStoreContainer" CdmEntityContainer="FavLinkEntities">
+          <EntitySetMapping Name="tbl_category">
+            <EntityTypeMapping TypeName="FavLinkModel.tbl_category">
+              <MappingFragment StoreEntitySet="tbl_category">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_itsupport">
+            <EntityTypeMapping TypeName="FavLinkModel.tbl_itsupport">
+              <MappingFragment StoreEntitySet="tbl_itsupport">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="phone_number" ColumnName="phone_number" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_itsupport_arrangment">
+            <EntityTypeMapping TypeName="FavLinkModel.tbl_itsupport_arrangment">
+              <MappingFragment StoreEntitySet="tbl_itsupport_arrangment">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ref_personID" ColumnName="ref_personID" />
+                <ScalarProperty Name="project" ColumnName="project" />
+                <ScalarProperty Name="shift" ColumnName="shift" />
+                <ScalarProperty Name="month" ColumnName="month" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_link_data">
+            <EntityTypeMapping TypeName="FavLinkModel.tbl_link_data">
+              <MappingFragment StoreEntitySet="tbl_link_data">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ref_userID" ColumnName="ref_userID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="url" ColumnName="url" />
+                <ScalarProperty Name="ref_categoryID" ColumnName="ref_categoryID" />
+                <ScalarProperty Name="icon" ColumnName="icon" />
+                <ScalarProperty Name="bg_color" ColumnName="bg_color" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_user">
+            <EntityTypeMapping TypeName="FavLinkModel.tbl_user">
+              <MappingFragment StoreEntitySet="tbl_user">
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ADAccount" ColumnName="ADAccount" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="LastLogon" ColumnName="LastLogon" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_hotline">
+            <EntityTypeMapping TypeName="FavLinkModel.tbl_hotline">
+              <MappingFragment StoreEntitySet="tbl_hotline">
+                <ScalarProperty Name="category" ColumnName="category" />
+                <ScalarProperty Name="phone_number" ColumnName="phone_number" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="UseLegacyProvider" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="FavLinkModel">
+        <EntityTypeShape EntityType="FavLinkModel.tbl_category" Width="1.5" PointX="0.75" PointY="1.5" Height="1.5956835937500002" IsExpanded="true" />
+        <EntityTypeShape EntityType="FavLinkModel.tbl_itsupport" Width="1.5" PointX="2.75" PointY="5.125" Height="1.7879850260416674" IsExpanded="true" />
+        <EntityTypeShape EntityType="FavLinkModel.tbl_itsupport_arrangment" Width="1.5" PointX="5" PointY="4.875" Height="2.1725878906249996" IsExpanded="true" />
+        <EntityTypeShape EntityType="FavLinkModel.tbl_link_data" Width="1.5" PointX="3" PointY="1" Height="2.7494921874999996" IsExpanded="true" />
+        <EntityTypeShape EntityType="FavLinkModel.tbl_user" Width="1.5" PointX="0.75" PointY="5.125" Height="2.3648893229166656" IsExpanded="true" />
+        <AssociationConnector Association="FavLinkModel.FK_TBL_LINK_REFERENCE_TBL_CATE" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="2.2978417968750002" />
+          <ConnectorPoint PointX="3" PointY="2.2978417968750002" />
+        </AssociationConnector>
+        <AssociationConnector Association="FavLinkModel.FK_TBL_ITSU_REFERENCE_TBL_ITSU" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.25" PointY="6.0189925130208337" />
+          <ConnectorPoint PointX="4.322916666666667" PointY="6.0189925130208328" />
+          <ConnectorPoint PointX="4.489583333333333" PointY="6.0189925130208337" />
+          <ConnectorPoint PointX="5" PointY="6.0189925130208337" />
+        </AssociationConnector>
+        <AssociationConnector Association="FavLinkModel.FK_TBL_LINK_REFERENCE_TBL_USER" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="7.2326871744791665" />
+          <ConnectorPoint PointX="4.40625" PointY="7.2326871744791665" />
+          <ConnectorPoint PointX="4.40625" PointY="3.7494921874999996" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="FavLinkModel.tbl_hotline" Width="1.5" PointX="5.375" PointY="0.75" Height="1.7879850260416665" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>
